@@ -6,14 +6,14 @@ import java.util.Scanner;
 import org.json.JSONObject;
 
 public class ApiGet {
-    URL url;
-    HttpURLConnection con;
-    double valorMoneda;
+    private URL url;
+    private HttpURLConnection con;
+    private double valorMoneda;
     
     
-    public void equibalencia(String moneda1, String moneda2){
+    public void equibalencia(String tipoMoneda1, String tipoMoneda2){
         try {
-            url = new URL("https://api.exchangerate.host/latest?base="+moneda1+"&&symbols="+moneda2);
+            url = new URL("https://api.exchangerate.host/latest?base="+tipoMoneda1+"&&symbols="+tipoMoneda2);
             con = (HttpURLConnection)url.openConnection();
             
             con.setRequestMethod("GET");
@@ -37,8 +37,9 @@ public class ApiGet {
                 System.out.println("numero 2: "+json2);
                 String objStr = json2.get("rates").toString();
                 JSONObject moneda = new JSONObject(objStr);
-                System.out.println(moneda);
-                valorMoneda =  Double.parseDouble(moneda.get("USD").toString());
+                System.out.println("Principal..."+moneda);
+                valorMoneda =  Double.parseDouble(moneda.get(tipoMoneda2).toString());
+                System.out.println("Principal..." + valorMoneda);
             }
             
         } catch (Exception e) {
@@ -47,8 +48,9 @@ public class ApiGet {
     }
     
     public double cambio(double cantidad){
-        double totalCambio = this.valorMoneda * cantidad;
-        
-        return totalCambio;
+        double monedaConvertida = this.valorMoneda * cantidad;
+        System.out.println("Class..."+monedaConvertida);
+        System.out.println("Class... valorMoneda"+valorMoneda);
+        return monedaConvertida;
     }
 }
